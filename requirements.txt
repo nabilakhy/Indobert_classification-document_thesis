@@ -1,5 +1,6 @@
 streamlit
 torch
+torchvision
 transformers
 pandas
 numpy
@@ -9,3 +10,4 @@ safetensors
 faiss-cpu
 sentence-transformers
 openai
+huggingface_hub
