@@ -217,7 +217,7 @@ def render_document_details(result):
             with distribution_columns[0]:
                 st.dataframe(
                     label_distribution,
-                    use_container_width=True,
+                    width="stretch",
                     hide_index=True,
                 )
 
@@ -239,7 +239,7 @@ def render_document_details(result):
 
             st.dataframe(
                 result_df,
-                use_container_width=True,
+                width="stretch",
                 hide_index=True,
             )
 

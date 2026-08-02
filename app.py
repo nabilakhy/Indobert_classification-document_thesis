@@ -52,7 +52,7 @@ def main():
     with button_column:
         process_clicked = st.button(
             "⚙️ Proses Dokumen",
-            use_container_width=True,
+            type="primary",
             disabled=uploaded_file is None,
         )
 
