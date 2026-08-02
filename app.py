@@ -24,8 +24,9 @@ st.set_page_config(
 
 def initialize_session_state():
     defaults = {
-    "analysis_result": None,
-    "processed_file_name": None,
+        "analysis_result": None,
+        "processed_file_name": None,
+        "explanation": None,
     }
 
     for key, default in defaults.items():
@@ -58,13 +59,14 @@ def main():
 
     current_result = st.session_state.analysis_result
 
-    # Menghilangkan hasil lama apabila pengguna memilih file baru
     if (
         uploaded_file is not None
         and st.session_state.processed_file_name is not None
         and uploaded_file.name != st.session_state.processed_file_name
     ):
         current_result = None
+        st.session_state.analysis_result = None
+        st.session_state.explanation = None
 
     if process_clicked and uploaded_file is not None:
         try:
@@ -73,7 +75,6 @@ def main():
 
             st.session_state.analysis_result = result
             st.session_state.processed_file_name = uploaded_file.name
-
             current_result = result
 
             st.success("Dokumen berhasil diproses.")
@@ -82,24 +83,28 @@ def main():
             st.error(f"Dokumen gagal diproses: {error}")
             st.exception(error)
             current_result = None
+            st.session_state.analysis_result = None
+            st.session_state.explanation = None
 
-        if current_result is not None:
-            render_classification_result(current_result)
+    if current_result is not None:
+        render_classification_result(current_result)
 
         st.divider()
-    
-        with st.spinner("OpenAI sedang menjelaskan hasil klasifikasi..."):
-            try:
-                explanation = explain_classification(
-                    label=current_result["final_label"],
-                    confidence=current_result["avg_confidence"],
-                    document_text=current_result["cleaned_text"],
-                )
 
-                st.markdown(explanation)
+        if st.session_state.explanation is None and current_result.get("cleaned_text"):
+            with st.spinner("OpenAI sedang menjelaskan hasil klasifikasi..."):
+                try:
+                    explanation = explain_classification(
+                        label=current_result["final_label"],
+                        confidence=current_result["avg_confidence"],
+                        document_text=current_result["cleaned_text"],
+                    )
+                    st.session_state.explanation = explanation
+                except Exception as error:
+                    st.session_state.explanation = f"Gemini gagal membuat penjelasan: {error}"
 
-            except Exception as error:
-                st.error(f"Gemini gagal membuat penjelasan: {error}")
+        if st.session_state.explanation:
+            st.markdown(st.session_state.explanation)
 
         render_similar_cases(
             current_result["similar_cases"],
