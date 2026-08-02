@@ -175,7 +175,8 @@ def render_similar_cases(similar_cases, faiss_ready):
 
 def render_document_details(result):
     with st.expander(
-        "Lihat informasi dan detail proses dokumen"
+        "Lihat informasi dan detail proses dokumen",
+        key="doc_details_expander",
     ):
         info_columns = st.columns(4)
 
@@ -245,7 +246,7 @@ def render_document_details(result):
 
 
 def render_extracted_text(result):
-    with st.expander("Lihat teks hasil ekstraksi"):
+    with st.expander("Lihat teks hasil ekstraksi", key="extracted_text_expander"):
         chunks = result.get("chunks", [])
         result_df = result.get("result_df")
 
