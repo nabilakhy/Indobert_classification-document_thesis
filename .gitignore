@@ -15,6 +15,7 @@ vector_store/
 
 # Dataset besar (tidak dipakai runtime)
 indo-law/dataset_pidana.csv
+indo-law/dataset/
 
 # IDE
 .vscode/
