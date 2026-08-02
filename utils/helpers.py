@@ -13,5 +13,5 @@ def score_to_percent(score):
 def format_case_name(filename):
     clean = str(filename).replace(".xml", "")
     if re.fullmatch(r"[a-f0-9]{32}", clean):
-        return f"Dokumen Putusan #{clean[:8].upper()}"
+        return f"\U0001f4c4 Dokumen Putusan #{clean[:8].upper()}"
     return html.escape(clean)
