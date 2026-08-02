@@ -6,9 +6,8 @@ __pycache__/
 venv/
 env/
 
-# Model & vector stores (model di-hosting di Hugging Face)
+# Model (di-hosting di Hugging Face)
 model/
-vector_store/
 
 # Streamlit
 .streamlit/secrets.toml
