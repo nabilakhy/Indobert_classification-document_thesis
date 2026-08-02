@@ -1,0 +1,28 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+env/
+
+# Model & vector stores (model di-hosting di Hugging Face)
+model/
+vector_store/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Dataset besar (tidak dipakai runtime)
+indo-law/dataset_pidana.csv
+
+# IDE
+.vscode/
+.idea/
+
+# Command Code
+.commandcode/
+
+# OS
+.DS_Store
+Thumbs.db

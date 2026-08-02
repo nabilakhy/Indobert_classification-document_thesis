@@ -1,0 +1,29 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environment (jika ada di dalam folder projek)
+venv/
+env/
+
+# Heavy Model Weights & Vector Stores (Gunakan Git LFS atau simpan di Cloud jika >100MB)
+model/*.bin
+model/*.safetensors
+model/*.pt
+vector_store/
+
+# Streamlit local secrets
+.streamlit/secrets.toml
+
+# File Besar (Model & Dataset)
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.csv
+
+# Folder Berat / Cache
+__pycache__/
+.streamlit/
+vector_store/
+"@
