@@ -2,7 +2,7 @@ import streamlit as st
 
 from textwrap import dedent
 
-from utils.helpers import safe_text, score_to_percent
+from utils.helpers import safe_text, score_to_percent, format_case_name
 
 
 def render_sidebar():
@@ -138,7 +138,7 @@ def render_similar_cases(similar_cases, faiss_ready):
             min(score_to_percent(similarity_score), 100.0),
         )
 
-        filename = safe_text(
+        filename = format_case_name(
             case.get("filename", "Dokumen tanpa nama")
         )
 
