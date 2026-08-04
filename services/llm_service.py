@@ -1,4 +1,6 @@
-from openai import OpenAI
+import time
+
+from openai import OpenAI, APIError, APIConnectionError, RateLimitError, APITimeoutError
 import streamlit as st
 
 
@@ -63,25 +65,41 @@ Jelaskan secara singkat hubungan antara isi dokumen
 dan hasil klasifikasi IndoBERT.
 """
 
-    response = client.chat.completions.create(
-        model=model,
-        messages=[
-            {
-                "role": "system",
-                "content": system_prompt,
-            },
-            {
-                "role": "user",
-                "content": user_prompt,
-            },
-        ],
-        timeout=60,
-        max_tokens=512,
-    )
+    max_retries = 5
+    retryable_errors = (APIConnectionError, RateLimitError, APITimeoutError, APIError)
 
-    result = response.choices[0].message.content
+    for attempt in range(1, max_retries + 1):
+        try:
+            response = client.chat.completions.create(
+                model=model,
+                messages=[
+                    {
+                        "role": "system",
+                        "content": system_prompt,
+                    },
+                    {
+                        "role": "user",
+                        "content": user_prompt,
+                    },
+                ],
+                timeout=60,
+                max_tokens=512,
+            )
 
-    if not result:
-        raise ValueError("LLM tidak menghasilkan penjelasan.")
+            result = response.choices[0].message.content
 
-    return result
+            if not result:
+                raise ValueError("LLM tidak menghasilkan penjelasan.")
+
+            return result
+
+        except retryable_errors as e:
+            if attempt == max_retries:
+                raise RuntimeError(
+                    f"Gagal setelah {max_retries}x percobaan: {e}"
+                ) from e
+            wait = 2 ** attempt
+            time.sleep(wait)
+
+        except Exception:
+            raise
