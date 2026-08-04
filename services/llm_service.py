@@ -28,7 +28,7 @@ informasi yang tersedia dalam dokumen.
 """
 
     user_prompt = f"""
-HASIL KLASIFIKASI INDoBERT:
+HASIL KLASIFIKASI INDOBERT:
 
 Jenis tindak pidana:
 {label}
@@ -75,6 +75,8 @@ dan hasil klasifikasi IndoBERT.
                 "content": user_prompt,
             },
         ],
+        timeout=60,
+        max_tokens=512,
     )
 
     result = response.choices[0].message.content
